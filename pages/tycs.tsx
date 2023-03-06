@@ -7,23 +7,30 @@ import Head from "next/head";
 // Por ahora estamos utilizando data mockeada, pero
 // debemos reemplazar esto por información proveniente de la
 // API
-export const data: TyCsAPIResponse = {
-  version: "3 de julio, 2022",
-  tycs: [
-    {
-      id: 1,
-      title: "General",
-      description: `Tienda Libre es una compañía que ofrece servicios vinculados principalmente al comercio electrónico. 
-                    Los servicios están diseñados para formar un ecosistema que permita a las personas vender, 
-                    comprar, pagar, enviar productos y realizar otras actividades comerciales con tecnología aplicada.`,
-    },
-  ],
-};
+// export const data: TyCsAPIResponse = {
+//   version: "3 de julio, 2022",
+//   tycs: [
+//     {
+//       id: 1,
+//       title: "General",
+//       description: `Tienda Libre es una compañía que ofrece servicios vinculados principalmente al comercio electrónico.
+//                     Los servicios están diseñados para formar un ecosistema que permita a las personas vender,
+//                     comprar, pagar, enviar productos y realizar otras actividades comerciales con tecnología aplicada.`,
+//     },
+//   ],
+// };
 
-const TerminosYCondiciones: NextPage = () => {
+interface Props {
+  data: {
+    version: string;
+    tycs: TyC[];
+  };
+}
+
+const TerminosYCondiciones: NextPage<Props> = (data) => {
   if (!data) return null;
 
-  const { version, tycs } = data;
+  const { version, tycs } = data.data;
 
   const renderTyc: (tyc: TyC) => JSX.Element = ({ id, description, title }) => (
     <div key={id}>
@@ -50,5 +57,13 @@ const TerminosYCondiciones: NextPage = () => {
 
 // Aquí debemos agregar el método para obtener la información
 // de la API
+export async function getStaticProps() {
+  const res = await fetch("https://integracion2-vercel.vercel.app/api/tycs");
+  const data = await res.json();
+
+  return {
+    props: { data },
+  };
+}
 
 export default TerminosYCondiciones;

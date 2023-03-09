@@ -4,6 +4,10 @@ const nextConfig = {
   images: {
     domains: ["fakestoreapi.com"],
   },
+  i18n:{
+    locales:[ "en-US", "pt-BR", "es-ES"],
+    defaultLocale: "es-ES"
+  }
 };
 
 module.exports = nextConfig;
